@@ -1,58 +1,42 @@
-package com.hrassist.user_service.entity;
+package com.hrassist.user_service.dto;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "users")
-public class UserEntity {
+public class CreateUserRequestDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(name = "first_name", nullable = false)
+    @NotBlank(message = "firstName is mandatory field")
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @NotBlank(message = "lastName is mandatory field")
     private String lastName;
 
-    @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "role_id", nullable = false)
+    @NotNull(message = "roleId is mandatory field")
     private Integer roleId;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank(message = "username is mandatory field")
     private String username;
 
+    @Email(message = "Invalid email format")
     private String email;
 
     private String password;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    public CreateUserRequestDto(){
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 
-    @PreUpdate
-    void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public CreateUserRequestDto(String firstName, String lastName, String middleName, Integer roleId, String username, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.roleId = roleId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -109,13 +93,5 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 }
